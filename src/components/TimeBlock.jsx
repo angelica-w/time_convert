@@ -4,11 +4,13 @@ import TimeInput from "./TimeInput";
 import TimezoneInput from "./TimezoneInput";
 import { Grid } from "@mui/material";
 import { Card, CardContent } from "@mui/material";
+import { StyledEngineProvider } from "@mui/material";
 
-const TimeBlock = ({ind, datetime, location, timezone, setDays, setTimes, setTimezones}) => {
+const TimeBlock = ({className, color, ind, datetime, location, timezone, setDatetimes, setTimezones}) => {
 
     return (
-        <Card>
+        <StyledEngineProvider injectFirst>
+        <Card className={className} sx={{backgroundColor: color}}>
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid item xs={10}>
@@ -24,7 +26,7 @@ const TimeBlock = ({ind, datetime, location, timezone, setDays, setTimes, setTim
                         <DateInput
                             ind={ind}
                             datetime={datetime}
-                            setDays={setDays}
+                            setDays={setDatetimes}
                         >
                         </DateInput>
                     </Grid>
@@ -32,7 +34,7 @@ const TimeBlock = ({ind, datetime, location, timezone, setDays, setTimes, setTim
                         <TimeInput
                             ind={ind}
                             datetime={datetime}
-                            setTimes={setTimes}
+                            setTimes={setDatetimes}
                         >
                         </TimeInput>
                     </Grid>
@@ -40,33 +42,7 @@ const TimeBlock = ({ind, datetime, location, timezone, setDays, setTimes, setTim
 
             </CardContent>
         </Card>
-
-
-        // <div className="card">
-        //     <div className="col">
-        //         <div className="row">
-        //             <TimezoneInput
-        //                 location={location}
-        //                 timezone={timezone}
-        //                 setLocation={setLocation}
-        //                 setTimezone={setTimezone}
-        //             >
-        //             </TimezoneInput>
-        //         </div>
-        //         <div className="row">
-        //             <DateInput
-        //                 date={date}
-        //                 setDate={setDate}
-        //             >
-        //             </DateInput>
-        //             <TimeInput
-        //                 time={time}
-        //                 setTime={setTime}
-        //             >
-        //             </TimeInput>
-        //         </div>
-        //     </div>
-        // </div>
+        </StyledEngineProvider>
     )
 }
 

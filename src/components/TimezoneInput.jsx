@@ -3,6 +3,7 @@ import { TimePicker } from '@mui/x-date-pickers';
 import { SearchBox } from '@mapbox/search-js-react';
 import { Autocomplete, TextField } from '@mui/material';
 import { allTimezones } from "../fixtures/allTimezones";
+import { StyledEngineProvider } from "@mui/material";
 
 const accessToken = "pk.eyJ1IjoiYW5nd2FuZyIsImEiOiJjbHYycng3eG8wbDAzMm1waWx6dXBzbDh6In0.1hErCQlLCNpJl9EyaX9V1g";
 const accessKey = "X7I1032R94HX"
@@ -10,7 +11,7 @@ const accessKey = "X7I1032R94HX"
 const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
 
     const [input, setInput] = useState(location);
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState(location ? [{name: location, label: "Locations"}] : []);
     const [value, setValue] = useState(location ? {name: location, label: "Locations"} : null);
 
     // const [value, setValue] = useState(location ? {name: location, label: "Locations"} : (timezone ? {name: timezone, label: "Timezones"} : null));
@@ -77,7 +78,7 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
                 tz = await fetchGeocode(newValue.name)
             }
             else if (newValue.label === "Timezone") {
-                console.log("timezone")
+                tz = newValue.name;
             }
 
             // setTimezones(tz, ind)
@@ -90,19 +91,22 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
     }
 
     return (
-        <Autocomplete
-            inputValue={input}
-            onInputChange={handleInputChange}
-            onChange={handleChange}
-            value={value}
-            filterOptions={(x) => x}
-            options={options}
-            groupBy={(option) => option.label}
-            getOptionLabel={(option) => option.name}
-            isOptionEqualToValue={(option, value) => option.name === value.name}
-            renderInput={(params) => <TextField {...params} label="Search for location or timezone" />}
-            // freeSolo
-        />
+        <StyledEngineProvider injectFirst>
+            <Autocomplete
+                disableClearable={true}
+                inputValue={input}
+                onInputChange={handleInputChange}
+                onChange={handleChange}
+                value={value}
+                filterOptions={(x) => x}
+                options={options}
+                groupBy={(option) => option.label}
+                getOptionLabel={(option) => option.name}
+                isOptionEqualToValue={(option, value) => option.name === value.name}
+                renderInput={(params) => <TextField {...params} label="Search for location or timezone" />}
+                // freeSolo
+            />
+        </StyledEngineProvider>
     )
 }
 
