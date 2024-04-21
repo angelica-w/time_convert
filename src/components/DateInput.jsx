@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { DatePicker } from '@mui/x-date-pickers';
 
-const DateInput = ({date, setDate}) => {
+const DateInput = ({ind, datetime, setDays}) => {
     return (
-        <div className="col">
+        <div className="col" style={{display: "flex", justifyContent: "flex-start"}}>
             <DatePicker
-                value={date}
-                onChange={(newValue) => setDate(newValue)}
+                value={datetime}
+                onChange={(e) => setDays(e, ind)}
             />
         </div>
     )
