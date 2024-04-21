@@ -6,7 +6,7 @@ import { allTimezones } from "../fixtures/allTimezones";
 import { StyledEngineProvider } from "@mui/material";
 
 const accessToken = "pk.eyJ1IjoiYW5nd2FuZyIsImEiOiJjbHYycng3eG8wbDAzMm1waWx6dXBzbDh6In0.1hErCQlLCNpJl9EyaX9V1g";
-const accessKey = "X7I1032R94HX"
+const accessKey = "1821be28676647278438d54d96ce5576"
 
 const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
 
@@ -53,9 +53,11 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
         const lon = result1[0];
         const lat = result1[1];
 
-        const response2 = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${accessKey}&format=json&by=position&lat=${lat}&lng=${lon}`);
+        const response2 = await fetch(`https://api.ipgeolocation.io/timezone?apiKey=${accessKey}&lat=${lat}&long=${lon}`)
+        // const response2 = await fetch(`https://timeapi.io/api/TimeZone/coordinate?latitude=${lat}&longitude=${lon}`)
+        // const response2 = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${accessKey}&format=json&by=position&lat=${lat}&lng=${lon}`);
         const json2 = await response2.json();
-        const result2 = json2.zoneName;
+        const result2 = json2.timezone;
         return result2;
     }
 
