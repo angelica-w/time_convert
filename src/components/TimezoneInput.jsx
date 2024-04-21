@@ -53,7 +53,7 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
         const lon = result1[0];
         const lat = result1[1];
 
-        const response2 = await fetch(`http://api.timezonedb.com/v2.1/get-time-zone?key=${accessKey}&format=json&by=position&lat=${lat}&lng=${lon}`);
+        const response2 = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${accessKey}&format=json&by=position&lat=${lat}&lng=${lon}`);
         const json2 = await response2.json();
         const result2 = json2.zoneName;
         return result2;
