@@ -1,28 +1,41 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-// import dayjs from 'dayjs';
 import { useState } from 'react'
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
 import { DateTime } from 'luxon';
 import TimeBlock from './components/TimeBlock';
-import DateInput from './components/DateInput';
-import { Divider } from '@mui/material';
 import { StyledEngineProvider } from '@mui/material';
+import { Alert } from '@mui/material';
 
 
 function App() {
   const [datetimes, setDatetimes] = useState([DateTime.now()]);
   const [locations, setLocations] = useState([""]);
   const [timezones, setTimezones] = useState([DateTime.now().zoneName]);
-  const [prevTimezones, setPrevTimezones] = useState([DateTime.now().zoneName]);
+  const [openAlert, setOpenAlert] = useState(false);
+  // const [prevTimezones, setPrevTimezones] = useState([DateTime.now().zoneName]);
 
   const addBlock = () => {
     const newBlock = datetimes[0].setZone("Asia/Tokyo");
     setDatetimes([...datetimes, newBlock]);
     setLocations([...locations, "Tokyo, Japan"]);
     setTimezones([...timezones, "Asia/Tokyo"]);
+  }
+
+  const deleteBlock = (ind) => {
+    if (datetimes.length === 1) {
+      setOpenAlert(true);
+    }
+    else {
+      const newDatetimes = datetimes.filter((datetime, index) => index !== ind);
+      const newLocations = locations.filter((location, index) => index !== ind);
+      const newTimezones = timezones.filter((timezone, index) => index !== ind);
+
+      setDatetimes(newDatetimes);
+      setLocations(newLocations);
+      setTimezones(newTimezones);
+    }
   }
 
   const updateDatetimes = (e, ind) => {
@@ -44,9 +57,9 @@ function App() {
 
   const updateTimezones = (tz, ind) => {
     if (tz) {
-      console.log("new timezone", tz);
-      setPrevTimezones(timezones);
-      console.log("prevtz", prevTimezones);
+      // console.log("new timezone", tz);
+      // setPrevTimezones(timezones);
+      // console.log("prevtz", prevTimezones);
 
       const newTimezones = timezones.map((timezone, index) =>
         ind === index ? tz : timezone
@@ -124,11 +137,17 @@ function App() {
             timezone={timezones[index]}
             setDatetimes={updateDatetimes}
             setTimezones={updateTimezones}
+            deleteBlock={deleteBlock}
           >
           </TimeBlock>
           );
         })}
         <button className="button" onClick={addBlock}>Add Block</button>
+        {openAlert ?
+          <Alert severity="warning" onClose={() => setOpenAlert(false)}>
+            Can't delete the last remaining time block
+          </Alert>
+        : null}
       </LocalizationProvider>
     </StyledEngineProvider>
   )
