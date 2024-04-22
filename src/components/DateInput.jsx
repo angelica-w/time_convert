@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { DatePicker } from '@mui/x-date-pickers';
 
 const DateInput = ({ind, datetime, setDays}) => {

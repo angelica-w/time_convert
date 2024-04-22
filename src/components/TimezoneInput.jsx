@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { TimePicker } from '@mui/x-date-pickers';
-import { SearchBox } from '@mapbox/search-js-react';
 import { Autocomplete, TextField } from '@mui/material';
 import { allTimezones } from "../fixtures/allTimezones";
 import { StyledEngineProvider } from "@mui/material";
@@ -9,13 +7,11 @@ const accessToken = "pk.eyJ1IjoiYW5nd2FuZyIsImEiOiJjbHYycng3eG8wbDAzMm1waWx6dXBz
 const accessKey = "1821be28676647278438d54d96ce5576"
 
 const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
-
     const [input, setInput] = useState(location);
     const [options, setOptions] = useState(location ? [{name: location, label: "Locations"}] : []);
     const [value, setValue] = useState(location ? {name: location, label: "Locations"} : null);
 
-    // const [value, setValue] = useState(location ? {name: location, label: "Locations"} : (timezone ? {name: timezone, label: "Timezones"} : null));
-
+    // fetch location suggestions based on user input
     const fetchLocation = async (newInput) => {
         const response = await fetch(`https://api.mapbox.com/search/searchbox/v1/suggest?q=${newInput}&types=city&limit=5&session_token="123"&access_token=${accessToken}`);
         const json = await response.json();
@@ -33,6 +29,8 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
         return results;
     }
 
+    // fetch timezone based on selected location
+    // combine location and timezone options
     const fetchOptions = async (newInput) => {
         if (newInput) {
             const cityOptions = await fetchLocation(newInput);
@@ -44,6 +42,7 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
         }
     }
 
+    // fetch timezone based on selected location's geocode
     const fetchGeocode = async (loc) => {
         const city = loc.split(", ")[0];
         const country = loc.split(", ")[1];
@@ -54,8 +53,6 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
         const lat = result1[1];
 
         const response2 = await fetch(`https://api.ipgeolocation.io/timezone?apiKey=${accessKey}&lat=${lat}&long=${lon}`)
-        // const response2 = await fetch(`https://timeapi.io/api/TimeZone/coordinate?latitude=${lat}&longitude=${lon}`)
-        // const response2 = await fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=${accessKey}&format=json&by=position&lat=${lat}&lng=${lon}`);
         const json2 = await response2.json();
         const result2 = json2.timezone;
         return result2;
@@ -74,16 +71,12 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
 
         if (newValue) {
             setInput(newValue.name);
-            // let tz = "";
-
             if (newValue.label === "Locations") {
                 tz = await fetchGeocode(newValue.name)
             }
             else if (newValue.label === "Timezone") {
                 tz = newValue.name;
             }
-
-            // setTimezones(tz, ind)
         }
         else {
             setInput("");

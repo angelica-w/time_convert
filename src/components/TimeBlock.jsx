@@ -1,4 +1,3 @@
-import { useState } from "react";
 import DateInput from "./DateInput";
 import TimeInput from "./TimeInput";
 import TimezoneInput from "./TimezoneInput";
@@ -12,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 
 const TimeBlock = ({className, color, ind, datetime, location, timezone, setDatetimes, setTimezones, deleteBlock}) => {
 
+    // delete a TimeBlock
     const handleDelete = () => {
         deleteBlock(ind);
     }
@@ -47,7 +47,6 @@ const TimeBlock = ({className, color, ind, datetime, location, timezone, setDate
                             >
                             </TimeInput>
                         </Grid>
-
                     </Grid>
                     <Grid item container direction="column" xs={2} justifyContent="space-between">
                         <Grid item container xs={2} justifyContent="flex-end" alignItems="flex-start">

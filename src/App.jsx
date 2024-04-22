@@ -11,11 +11,11 @@ import { Alert } from '@mui/material';
 
 function App() {
   const [datetimes, setDatetimes] = useState([DateTime.now()]);
-  const [locations, setLocations] = useState([""]);
+  const [locations, setLocations] = useState(["Current Location"]);
   const [timezones, setTimezones] = useState([DateTime.now().zoneName]);
   const [openAlert, setOpenAlert] = useState(false);
-  // const [prevTimezones, setPrevTimezones] = useState([DateTime.now().zoneName]);
 
+  // add new TimeBlock, defaulted to Tokyo timezone
   const addBlock = () => {
     const newBlock = datetimes[0].setZone("Asia/Tokyo");
     setDatetimes([...datetimes, newBlock]);
@@ -23,7 +23,9 @@ function App() {
     setTimezones([...timezones, "Asia/Tokyo"]);
   }
 
+  // delete a TimeBlock
   const deleteBlock = (ind) => {
+    // only allow a TimeBlock to be deleted if there are more than one TimeBlocks
     if (datetimes.length === 1) {
       setOpenAlert(true);
     }
@@ -38,6 +40,7 @@ function App() {
     }
   }
 
+  // update all Timeblock datetimes based on selected datetime
   const updateDatetimes = (e, ind) => {
     const newDatetimes = datetimes.map((datetime, index) => {
       const newdt = DateTime.fromObject({
@@ -55,12 +58,10 @@ function App() {
     setDatetimes(newDatetimes);
   }
 
+  // update all TimeBlock timezones and corresponding datetimes based on selected timezone
   const updateTimezones = (tz, ind) => {
+    // only update if non-null timezone is selected
     if (tz) {
-      // console.log("new timezone", tz);
-      // setPrevTimezones(timezones);
-      // console.log("prevtz", prevTimezones);
-
       const newTimezones = timezones.map((timezone, index) =>
         ind === index ? tz : timezone
       );
@@ -81,6 +82,7 @@ function App() {
     }
   }
 
+  // calculate color gradient
   const interpolateColor = (color1, color2, factor) => {
     let result = color1.slice();
     for (let i = 0; i < 3; i++) {
@@ -89,6 +91,7 @@ function App() {
     return result;
   };
 
+  // get background color for TimeBlock based on time of day
   const getColor = (datetime) => {
     const hr = datetime.hour;
     const normHr = (hr % 24) / 24;
@@ -117,8 +120,6 @@ function App() {
     }
     return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
   }
-  console.log("datetimes", datetimes);
-  console.log("timezones", timezones);
 
   return (
     <StyledEngineProvider injectFirst>
