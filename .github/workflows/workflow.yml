@@ -20,6 +20,10 @@ concurrency:
   group: 'pages'
   cancel-in-progress: true
 
+env:
+  VITE_MAPBOX_KEY: ${{secrets.VITE_MAPBOX_KEY}}
+  VITE_IPGEO_KEY: ${{secrets.VITE_IPGEO_KEY}}
+
 jobs:
   # Single deploy job since we're just deploying
   deploy:
@@ -39,9 +43,6 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-        env:
-          VITE_MAPBOX_KEY: ${{secrets.VITE_MAPBOX_KEY}}
-          VITE_IPGEO_KEY: ${{secrets.VITE_IPGEO_KEY}}
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
