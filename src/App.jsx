@@ -25,7 +25,6 @@ function App() {
       minute: datetimes[0].minute,
     }, {zone: timezones[0]}).setZone("Asia/Tokyo");
 
-    // const newBlock = datetimes[0].setZone("Asia/Tokyo");
     setDatetimes([...datetimes, newBlock]);
     setLocations([...locations, "Tokyo, Japan"]);
     setTimezones([...timezones, "Asia/Tokyo"]);
@@ -42,12 +41,10 @@ function App() {
       const newDatetimes = datetimes.filter((datetime, index) => index !== ind);
       const newLocations = locations.filter((location, index) => index !== ind);
       const newTimezones = timezones.filter((timezone, index) => index !== ind);
-      console.log("new datetimes", newDatetimes);
+
+      setDatetimes(newDatetimes);
       setLocations(newLocations);
       setTimezones(newTimezones);
-      setDatetimes(newDatetimes);
-      // updateTimezones(newTimezones);
-      // updateDatetimes(newDatetimes);
     }
   }
 
@@ -73,7 +70,6 @@ function App() {
   const updateTimezones = (tz, ind) => {
     // only update if non-null timezone is selected
     if (tz) {
-      console.log("change", tz);
       const newTimezones = timezones.map((timezone, index) =>
         ind === index ? tz : timezone
       );
@@ -132,10 +128,6 @@ function App() {
     }
     return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
   }
-
-  console.log(datetimes);
-  console.log(locations);
-  console.log(timezones);
 
   return (
     <StyledEngineProvider injectFirst>

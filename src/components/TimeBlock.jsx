@@ -50,11 +50,17 @@ const TimeBlock = ({className, color, ind, datetime, location, timezone, setDate
                         </Grid>
                     </Grid>
                     <Grid item container direction="column" xs={2} justifyContent="space-between">
-                        <Grid item container xs={2} justifyContent="flex-end" alignItems="flex-start">
-                            <IconButton onClick={handleDelete}>
-                                <DeleteOutlineOutlinedIcon />
-                            </IconButton>
-                        </Grid>
+                        {
+                            ind === 0
+                            ? <Grid item container xs={2}></Grid>
+                            : (
+                                <Grid item container xs={2} justifyContent="flex-end" alignItems="flex-start">
+                                    <IconButton onClick={handleDelete}>
+                                        <DeleteOutlineOutlinedIcon />
+                                    </IconButton>
+                                </Grid>
+                            )
+                        }
                         <Grid container item xs={8} justifyContent="center" alignItems="center">
                             {
                                 datetime.c.hour >= 9 && datetime.c.hour <= 17 ? (

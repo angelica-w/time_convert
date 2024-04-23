@@ -8,11 +8,13 @@ const VITE_IPGEO_KEY = import.meta.env.VITE_IPGEO_KEY;
 
 const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
     const [input, setInput] = useState(location);
-    const [options, setOptions] = useState(location ? [{name: location, label: "Locations"}] : []);
-    const [value, setValue] = useState(location ? {name: location, label: "Locations"} : null);
-    console.log("input", input);
-    console.log("value", value);
-    console.log("location", location);
+    const [options, setOptions] = useState(location
+        ? [{name: location, label: "Locations"}]
+        : (timezone ? [{name: timezone, label: "Timezones"}] : []));
+    const [value, setValue] = useState(location
+        ? {name: location, label: "Locations"}
+        : (timezone ? {name: timezone, label: "Timezones"} : []));
+
     // fetch location suggestions based on user input
     const fetchLocation = async (newInput) => {
         const response = await fetch(`https://api.mapbox.com/search/searchbox/v1/suggest?q=${newInput}&types=city&limit=5&session_token="456"&access_token=${VITE_MAPBOX_KEY}`);
@@ -69,7 +71,7 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
     // update value and input when user selects an option
     const handleChange = async (e, newValue) => {
         setValue(newValue);
-        let tz = "";
+        let tz = timezone;
 
         if (newValue) {
             setInput(newValue.name);
