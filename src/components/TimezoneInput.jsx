@@ -3,17 +3,19 @@ import { Autocomplete, TextField } from '@mui/material';
 import { allTimezones } from "../fixtures/allTimezones";
 import { StyledEngineProvider } from "@mui/material";
 
-const accessToken = "pk.eyJ1IjoiYW5nd2FuZyIsImEiOiJjbHYycng3eG8wbDAzMm1waWx6dXBzbDh6In0.1hErCQlLCNpJl9EyaX9V1g";
-const accessKey = "1821be28676647278438d54d96ce5576"
+const VITE_MAPBOX_KEY = import.meta.env.VITE_MAPBOX_KEY;
+const VITE_IPGEO_KEY = import.meta.env.VITE_IPGEO_KEY;
 
 const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
     const [input, setInput] = useState(location);
     const [options, setOptions] = useState(location ? [{name: location, label: "Locations"}] : []);
     const [value, setValue] = useState(location ? {name: location, label: "Locations"} : null);
-
+    console.log("input", input);
+    console.log("value", value);
+    console.log("location", location);
     // fetch location suggestions based on user input
     const fetchLocation = async (newInput) => {
-        const response = await fetch(`https://api.mapbox.com/search/searchbox/v1/suggest?q=${newInput}&types=city&limit=5&session_token="123"&access_token=${accessToken}`);
+        const response = await fetch(`https://api.mapbox.com/search/searchbox/v1/suggest?q=${newInput}&types=city&limit=5&session_token="456"&access_token=${VITE_MAPBOX_KEY}`);
         const json = await response.json();
         const results = json.suggestions.map(result => {
             let name = result.name;
@@ -46,13 +48,13 @@ const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
     const fetchGeocode = async (loc) => {
         const city = loc.split(", ")[0];
         const country = loc.split(", ")[1];
-        const response1 = await fetch(`https://api.mapbox.com/search/geocode/v6/forward?place=${city}&country=${country}&types=place&access_token=${accessToken}`);
+        const response1 = await fetch(`https://api.mapbox.com/search/geocode/v6/forward?place=${city}&country=${country}&types=place&access_token=${VITE_MAPBOX_KEY}`);
         const json1 = await response1.json();
         const result1 = json1.features[0].geometry.coordinates;
         const lon = result1[0];
         const lat = result1[1];
 
-        const response2 = await fetch(`https://api.ipgeolocation.io/timezone?apiKey=${accessKey}&lat=${lat}&long=${lon}`)
+        const response2 = await fetch(`https://api.ipgeolocation.io/timezone?apiKey=${VITE_IPGEO_KEY}&lat=${lat}&long=${lon}`)
         const json2 = await response2.json();
         const result2 = json2.timezone;
         return result2;

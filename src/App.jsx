@@ -11,13 +11,21 @@ import { Alert } from '@mui/material';
 
 function App() {
   const [datetimes, setDatetimes] = useState([DateTime.now()]);
-  const [locations, setLocations] = useState(["Current Location"]);
+  const [locations, setLocations] = useState([""]);
   const [timezones, setTimezones] = useState([DateTime.now().zoneName]);
   const [openAlert, setOpenAlert] = useState(false);
 
   // add new TimeBlock, defaulted to Tokyo timezone
   const addBlock = () => {
-    const newBlock = datetimes[0].setZone("Asia/Tokyo");
+    const newBlock = DateTime.fromObject({
+      year: datetimes[0].year,
+      month: datetimes[0].month,
+      day: datetimes[0].day,
+      hour: datetimes[0].hour,
+      minute: datetimes[0].minute,
+    }, {zone: timezones[0]}).setZone("Asia/Tokyo");
+
+    // const newBlock = datetimes[0].setZone("Asia/Tokyo");
     setDatetimes([...datetimes, newBlock]);
     setLocations([...locations, "Tokyo, Japan"]);
     setTimezones([...timezones, "Asia/Tokyo"]);
@@ -25,6 +33,7 @@ function App() {
 
   // delete a TimeBlock
   const deleteBlock = (ind) => {
+    console.log(ind);
     // only allow a TimeBlock to be deleted if there are more than one TimeBlocks
     if (datetimes.length === 1) {
       setOpenAlert(true);
@@ -33,10 +42,12 @@ function App() {
       const newDatetimes = datetimes.filter((datetime, index) => index !== ind);
       const newLocations = locations.filter((location, index) => index !== ind);
       const newTimezones = timezones.filter((timezone, index) => index !== ind);
-
-      setDatetimes(newDatetimes);
+      console.log("new datetimes", newDatetimes);
       setLocations(newLocations);
       setTimezones(newTimezones);
+      setDatetimes(newDatetimes);
+      // updateTimezones(newTimezones);
+      // updateDatetimes(newDatetimes);
     }
   }
 
@@ -62,6 +73,7 @@ function App() {
   const updateTimezones = (tz, ind) => {
     // only update if non-null timezone is selected
     if (tz) {
+      console.log("change", tz);
       const newTimezones = timezones.map((timezone, index) =>
         ind === index ? tz : timezone
       );
@@ -72,7 +84,7 @@ function App() {
           day: datetimes[ind].day,
           hour: datetimes[ind].hour,
           minute: datetimes[ind].minute,
-        }, {zone: tz}
+        }, {zone: newTimezones[ind]}
         ).setZone((newTimezones[index]));
         return newdt;
       });
@@ -120,6 +132,10 @@ function App() {
     }
     return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
   }
+
+  console.log(datetimes);
+  console.log(locations);
+  console.log(timezones);
 
   return (
     <StyledEngineProvider injectFirst>

@@ -8,6 +8,7 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 import SentimentSatisfiedOutlinedIcon from '@mui/icons-material/SentimentSatisfiedOutlined';
 import SentimentDissatisfiedOutlinedIcon from '@mui/icons-material/SentimentDissatisfiedOutlined';
 import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
 
 const TimeBlock = ({className, color, ind, datetime, location, timezone, setDatetimes, setTimezones, deleteBlock}) => {
 
@@ -50,7 +51,9 @@ const TimeBlock = ({className, color, ind, datetime, location, timezone, setDate
                     </Grid>
                     <Grid item container direction="column" xs={2} justifyContent="space-between">
                         <Grid item container xs={2} justifyContent="flex-end" alignItems="flex-start">
-                            <DeleteOutlineOutlinedIcon  fontSize="medium" onClick={handleDelete} />
+                            <IconButton onClick={handleDelete}>
+                                <DeleteOutlineOutlinedIcon />
+                            </IconButton>
                         </Grid>
                         <Grid container item xs={8} justifyContent="center" alignItems="center">
                             {
