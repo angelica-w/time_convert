@@ -3,8 +3,8 @@ import { Autocomplete, TextField } from '@mui/material';
 import { allTimezones } from "../fixtures/allTimezones";
 import { StyledEngineProvider } from "@mui/material";
 
-const VITE_MAPBOX_KEY = import.meta.env.VITE_MAPBOX_KEY;
-const VITE_IPGEO_KEY = import.meta.env.VITE_IPGEO_KEY;
+const VITE_MAPBOX_KEY = import.meta.env.VITE_MAPBOX_KEY[1:-1];
+const VITE_IPGEO_KEY = import.meta.env.VITE_IPGEO_KEY[1:-1];
 
 const TimezoneInput = ({ind, location, timezone, setTimezones}) => {
     const [input, setInput] = useState(location);
